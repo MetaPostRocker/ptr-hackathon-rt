@@ -23,9 +23,15 @@ class VaccineType(models.Model):
 
 
 class MedicalCertificate(models.Model):
+    @staticmethod
+    def user_directory_path(instance, filename):
+        user_id = str(instance.owner.id)
+        ext = filename.split('.')[-1]
+        return settings.MEDIA_ROOT / 'medical_certificates' / f'user_{user_id}' / f'{filename}.{ext}'
+
     type = models.ForeignKey(verbose_name='Certificate type', to='medical_tests.MedicalCertificateType',
                              on_delete=models.CASCADE)
-    file = models.FileField('File', upload_to=settings.MEDIA_ROOT / 'medical_certificates')
+    file = models.FileField('File', upload_to=user_directory_path)
     owner = models.ForeignKey(verbose_name='Owner', to='users.User', on_delete=models.CASCADE)
     given_by = models.ForeignKey(verbose_name='Given by', to='medical_institutions.MedicalInstitution',
                                  on_delete=models.RESTRICT)
@@ -41,9 +47,15 @@ class MedicalCertificate(models.Model):
 
 
 class Vaccine(models.Model):
+    @staticmethod
+    def user_directory_path(instance, filename):
+        user_id = str(instance.owner.id)
+        ext = filename.split('.')[-1]
+        return settings.MEDIA_ROOT / 'vaccines' / f'user_{user_id}' / f'{filename}.{ext}'
+
     type = models.ForeignKey(verbose_name='Vaccine type', to='medical_tests.VaccineType',
                              on_delete=models.CASCADE)
-    file = models.FileField('File', upload_to=settings.MEDIA_ROOT / 'vaccines')
+    file = models.FileField('File', upload_to=user_directory_path)
     owner = models.ForeignKey(verbose_name='Owner', to='users.User', on_delete=models.CASCADE)
     given_by = models.ForeignKey(verbose_name='Given by', to='medical_institutions.MedicalInstitution',
                                  on_delete=models.RESTRICT)
