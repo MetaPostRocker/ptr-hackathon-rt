@@ -22,13 +22,13 @@ class TrumorDetectionModel(BaseKerasModel):
         p = np.argmax(p, axis=1)[0]
 
         if p == 0:
-            return 'glioma_tumor'
+            return 'Рак (Глиома)'
         elif p == 1:
-            return None
+            return 'Здоров'
         elif p == 2:
-            return 'meningioma_tumor'
+            return 'Рак (Менингиома)'
         else:
-            return 'pituitary_tumor'
+            return 'Опухоль Гипофиза'
 
 
 class PneumoniaDetectionModel(BaseKerasModel):
@@ -44,5 +44,5 @@ class PneumoniaDetectionModel(BaseKerasModel):
         img = cv2.resize(opencvImage, (150, 150))
         img = img.reshape(1, 150, 150, 1)
         p = cls.model.predict(img)
-        result = None if p[0][0] > 0.5 else "pneumonia"
+        result = 'Здоров' if p[0][0] > 0.5 else 'Пневмония'
         return result

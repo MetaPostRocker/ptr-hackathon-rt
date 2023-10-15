@@ -43,6 +43,7 @@ class VaccineSerializer(serializers.ModelSerializer):
     expired = serializers.SerializerMethodField()
 
     title = serializers.SerializerMethodField()
+    display_image = serializers.SerializerMethodField()
 
     def get_display_image(self, obj: MedicalCertificate):
         return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', '.jpeg')
