@@ -13,6 +13,12 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     expired = serializers.SerializerMethodField()
+    given_by = Gin
+
+    title = serializers.SerializerMethodField()
+
+    def get_title(self, obj: MedicalCertificate):
+        return obj.type.name
 
     @staticmethod
     def get_expired(obj: MedicalCertificate):
@@ -20,7 +26,8 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MedicalCertificate
-        fields = ('type', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date', 'expired')
+        fields = ('type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
+                  'expired')
 
 
 class VaccineSerializer(serializers.ModelSerializer):
@@ -28,10 +35,16 @@ class VaccineSerializer(serializers.ModelSerializer):
 
     expired = serializers.SerializerMethodField()
 
+    title = serializers.SerializerMethodField()
+
+    def get_title(self, obj: MedicalCertificate):
+        return obj.type.name
+
     @staticmethod
     def get_expired(obj: Vaccine):
         return obj.expiration_date < timezone.now()
 
     class Meta:
         model = Vaccine
-        fields = ('type', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date', 'expired')
+        fields = ('type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
+                  'expired')
