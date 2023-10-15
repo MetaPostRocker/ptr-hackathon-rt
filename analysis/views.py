@@ -6,7 +6,8 @@ from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 
 from analysis.models import AnalysisTag, AnalysisEntry, QUALITATIVE
-from analysis.serializers import AnalysisTagSerializer, AnalysisEntrySerializer, AnalysisEntryDetailSerializer
+from analysis.serializers import AnalysisTagSerializer, AnalysisEntrySerializer, AnalysisEntryDetailSerializer, \
+    ListAnalysisEntrySerializer
 from analysis.services import get_qualitative_diagnosis
 from ext.rest_framework.viewsets.dynamic_serializer import ActionBasedSerializerClassMixin
 from ext.rest_framework.viewsets.mixins import ListRequiresFilterMixin
@@ -34,6 +35,7 @@ class AnalysisEntryViewSet(ActionBasedSerializerClassMixin, viewsets.ModelViewSe
     permission_classes = [IsAuthenticated]
 
     serializer_class = AnalysisEntrySerializer
+    list_serializer_class = ListAnalysisEntrySerializer
     retrieve_serializer_class = AnalysisEntryDetailSerializer
 
     def perform_create(self, serializer):
@@ -42,7 +44,6 @@ class AnalysisEntryViewSet(ActionBasedSerializerClassMixin, viewsets.ModelViewSe
             result = get_qualitative_diagnosis(obj)
             obj.diagnosis = result
             obj.save()
-
 
     def get_queryset(self):
         queryset = super().get_queryset()

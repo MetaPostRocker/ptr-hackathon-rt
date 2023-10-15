@@ -26,6 +26,16 @@ class AnalysisEntrySerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {'diagnosis': {'read_only': True}}
 
 
+class ListAnalysisEntrySerializer(AnalysisEntrySerializer):
+    tags = AnalysisTagSerializer(many=True, read_only=True)
+
+    class Meta(AnalysisEntrySerializer.Meta):
+        pass
+
+
+
+
+
 class AnalysisEntryDetailSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     quantitative_analysis_entries = QuantitativeAnalysisEntrySerializer(many=True, read_only=True)
