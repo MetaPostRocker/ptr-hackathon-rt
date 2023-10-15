@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from rest_framework import serializers
 
 from analysis.models import AnalysisTag, AnalysisEntry, QuantitativeAnalysisEntry
@@ -18,11 +20,15 @@ class QuantitativeAnalysisEntrySerializer(serializers.ModelSerializer):
 class AnalysisEntrySerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     quantitative_analysis_entries_count = serializers.IntegerField(read_only=True)
+    display_image = serializers.SerializerMethodField()
+
+    def get_display_image(self, obj: AnalysisEntry):
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jgp', 'jpeg')
 
     class Meta:
         model = AnalysisEntry
         fields = ('url', 'name', 'type', 'tags', 'quantitative_analysis_entries_count', 'file',
-                  'analysis_date', 'diagnosis', 'owner')
+                  'analysis_date', 'diagnosis', 'owner', 'display_image')
         extra_kwargs = {'diagnosis': {'read_only': True}}
 
 
