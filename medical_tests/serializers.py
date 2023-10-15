@@ -22,7 +22,7 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
     display_image = serializers.SerializerMethodField()
 
     def get_display_image(self, obj: MedicalCertificate):
-        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', 'jpeg')
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', '.jpeg')
 
     def get_title(self, obj: MedicalCertificate):
         return obj.type.name
@@ -45,7 +45,7 @@ class VaccineSerializer(serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
 
     def get_display_image(self, obj: MedicalCertificate):
-        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', 'jpeg')
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', '.jpeg')
 
     def get_title(self, obj: MedicalCertificate):
         return obj.type.name
