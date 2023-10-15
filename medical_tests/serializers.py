@@ -1,6 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
 
+from medical_institutions.serializers import MedicalInstitutionSerializer
 from medical_tests.models import MedicalCertificate, MedicalCertificateType, Vaccine
 
 
@@ -13,7 +14,7 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     expired = serializers.SerializerMethodField()
-    given_by = Gin
+    given_by = MedicalInstitutionSerializer()
 
     title = serializers.SerializerMethodField()
 
