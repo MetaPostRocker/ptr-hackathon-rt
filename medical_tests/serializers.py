@@ -33,7 +33,7 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MedicalCertificate
-        fields = ('type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
+        fields = ('id', 'type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
                   'expired', 'display_image')
 
 
@@ -57,5 +57,5 @@ class VaccineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vaccine
-        fields = ('type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
+        fields = ('id', 'type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
                   'expired', 'display_image')
