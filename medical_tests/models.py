@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.conf import settings
 from django.db import models
 
@@ -23,8 +25,11 @@ class VaccineType(models.Model):
 
 
 class MedicalCertificate(models.Model):
-    def user_directory_path(*args, **kwargs):
-        return settings.MEDIA_ROOT / 'medical_certificates'
+    def user_directory_path(self, filename):
+        print(self, filename)
+        user_id = str(self.owner.id)
+        class_name = self.__class__.__name__.lower()
+        return Path(class_name) / f'user_{user_id}' / filename
 
     type = models.ForeignKey(verbose_name='Certificate type', to='medical_tests.MedicalCertificateType',
                              on_delete=models.CASCADE)
@@ -44,8 +49,10 @@ class MedicalCertificate(models.Model):
 
 
 class Vaccine(models.Model):
-    def user_directory_path(*args, **kwargs):
-        return settings.MEDIA_ROOT / 'vaccines'
+    def user_directory_path(self, filename):
+        user_id = str(self.owner.id)
+        class_name = self.__class__.__name__.lower()
+        return Path(class_name) / f'user_{user_id}' / filename
 
     type = models.ForeignKey(verbose_name='Vaccine type', to='medical_tests.VaccineType',
                              on_delete=models.CASCADE)
@@ -62,4 +69,3 @@ class Vaccine(models.Model):
 
     class Meta:
         order_with_respect_to = 'owner'
-
