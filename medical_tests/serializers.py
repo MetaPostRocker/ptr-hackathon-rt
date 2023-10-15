@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -17,6 +19,10 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
     given_by = MedicalInstitutionSerializer()
 
     title = serializers.SerializerMethodField()
+    display_image = serializers.SerializerMethodField()
+
+    def get_display_image(self, obj: MedicalCertificate):
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', 'jpeg')
 
     def get_title(self, obj: MedicalCertificate):
         return obj.type.name
@@ -28,7 +34,7 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalCertificate
         fields = ('type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
-                  'expired')
+                  'expired', 'display_image')
 
 
 class VaccineSerializer(serializers.ModelSerializer):
@@ -37,6 +43,9 @@ class VaccineSerializer(serializers.ModelSerializer):
     expired = serializers.SerializerMethodField()
 
     title = serializers.SerializerMethodField()
+
+    def get_display_image(self, obj: MedicalCertificate):
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', 'jpeg')
 
     def get_title(self, obj: MedicalCertificate):
         return obj.type.name
@@ -48,4 +57,4 @@ class VaccineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vaccine
         fields = ('type', 'title', 'owner', 'file', 'given_by', 'created_date', 'received_date', 'expiration_date',
-                  'expired')
+                  'expired', 'display_image')

@@ -23,7 +23,7 @@ class AnalysisEntrySerializer(serializers.HyperlinkedModelSerializer):
     display_image = serializers.SerializerMethodField()
 
     def get_display_image(self, obj: AnalysisEntry):
-        return Path(obj.file.path).suffix.lower() in ('.png', '.jgp', 'jpeg')
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', 'jpeg')
 
     class Meta:
         model = AnalysisEntry
