@@ -23,11 +23,11 @@ class VaccineType(models.Model):
 
 
 class MedicalCertificate(models.Model):
-    @staticmethod
-    def user_directory_path(instance, filename):
+    def user_directory_path(self, instance, filename):
         user_id = str(instance.owner.id)
         ext = filename.split('.')[-1]
-        return settings.MEDIA_ROOT / 'medical_certificates' / f'user_{user_id}' / f'{filename}.{ext}'
+        class_name = self.__class__.__name__.lower()
+        return settings.MEDIA_ROOT / class_name / f'user_{user_id}' / f'{filename}.{ext}'
 
     type = models.ForeignKey(verbose_name='Certificate type', to='medical_tests.MedicalCertificateType',
                              on_delete=models.CASCADE)
@@ -47,11 +47,11 @@ class MedicalCertificate(models.Model):
 
 
 class Vaccine(models.Model):
-    @staticmethod
-    def user_directory_path(instance, filename):
+    def user_directory_path(self, instance, filename):
         user_id = str(instance.owner.id)
         ext = filename.split('.')[-1]
-        return settings.MEDIA_ROOT / 'vaccines' / f'user_{user_id}' / f'{filename}.{ext}'
+        class_name = self.__class__.__name__.lower()
+        return settings.MEDIA_ROOT / class_name / f'user_{user_id}' / f'{filename}.{ext}'
 
     type = models.ForeignKey(verbose_name='Vaccine type', to='medical_tests.VaccineType',
                              on_delete=models.CASCADE)

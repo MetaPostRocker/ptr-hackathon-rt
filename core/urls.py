@@ -21,10 +21,12 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework.routers import DefaultRouter
 
+from analysis.urls import analysis_router
 from medical_tests.urls import medical_tests_router
 
 router = DefaultRouter()
 router.registry.extend(medical_tests_router.registry)
+router.registry.extend(analysis_router.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
