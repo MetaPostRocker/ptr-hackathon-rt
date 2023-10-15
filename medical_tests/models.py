@@ -23,12 +23,12 @@ class VaccineType(models.Model):
 
 
 class MedicalCertificate(models.Model):
-    def user_directory_path(self):
-        ...
+    def user_directory_path(*args, **kwargs):
+        return settings.MEDIA_ROOT / 'medical_certificates'
 
     type = models.ForeignKey(verbose_name='Certificate type', to='medical_tests.MedicalCertificateType',
                              on_delete=models.CASCADE)
-    file = models.FileField('File', upload_to=settings.MEDIA_ROOT / 'medical_certificates')
+    file = models.FileField('File', upload_to=user_directory_path)
     owner = models.ForeignKey(verbose_name='Owner', to='users.User', on_delete=models.CASCADE)
     given_by = models.ForeignKey(verbose_name='Given by', to='medical_institutions.MedicalInstitution',
                                  on_delete=models.RESTRICT)
@@ -44,12 +44,12 @@ class MedicalCertificate(models.Model):
 
 
 class Vaccine(models.Model):
-    def user_directory_path(self):
-        ...
+    def user_directory_path(*args, **kwargs):
+        return settings.MEDIA_ROOT / 'vaccines'
 
     type = models.ForeignKey(verbose_name='Vaccine type', to='medical_tests.VaccineType',
                              on_delete=models.CASCADE)
-    file = models.FileField('File', upload_to=settings.MEDIA_ROOT / 'vaccines')
+    file = models.FileField('File', upload_to=user_directory_path)
     owner = models.ForeignKey(verbose_name='Owner', to='users.User', on_delete=models.CASCADE)
     given_by = models.ForeignKey(verbose_name='Given by', to='medical_institutions.MedicalInstitution',
                                  on_delete=models.RESTRICT)
