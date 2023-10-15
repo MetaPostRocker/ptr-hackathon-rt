@@ -50,3 +50,4 @@ class QuantitativeAnalysisEntry(models.Model):
     value = models.FloatField('Value')
     unit = models.CharField('Unit', max_length=12, null=True, blank=True)
     normal_value = models.TextField('Normal value', null=True, blank=True)
+    diagnosis = models.TextField('Diagnosis', null=True, blank=True)

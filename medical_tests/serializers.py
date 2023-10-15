@@ -4,12 +4,19 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from medical_institutions.serializers import MedicalInstitutionSerializer
-from medical_tests.models import MedicalCertificate, MedicalCertificateType, Vaccine
+from medical_tests.models import MedicalCertificate, MedicalCertificateType, Vaccine, VaccineType
 
 
-# class MedicalCertificateTypeSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MedicalCertificateType
+class MedicalCertificateTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MedicalCertificateType
+        fields = '__all__'
+
+
+class VaccineTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VaccineType
+        fields = '__all__'
 
 
 class MedicalCertificateSerializer(serializers.ModelSerializer):
@@ -17,6 +24,7 @@ class MedicalCertificateSerializer(serializers.ModelSerializer):
 
     expired = serializers.SerializerMethodField()
     given_by = MedicalInstitutionSerializer()
+    type = MedicalCertificateTypeSerializer()
 
     title = serializers.SerializerMethodField()
     display_image = serializers.SerializerMethodField()
@@ -41,6 +49,7 @@ class VaccineSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     expired = serializers.SerializerMethodField()
+    type = VaccineTypeSerializer()
 
     title = serializers.SerializerMethodField()
     display_image = serializers.SerializerMethodField()

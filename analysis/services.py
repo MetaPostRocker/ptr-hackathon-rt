@@ -22,6 +22,7 @@ def parse_quantitative_analysis_entries(analysis_entry: AnalysisEntry):
         data = parse_pdf(analysis_entry.file.path)
         data = _map_data(data)
         for item in data:
+            item.pop('normal_value')
             QuantitativeAnalysisEntry.objects.create(analysis_entry=analysis_entry, **item)
 
 

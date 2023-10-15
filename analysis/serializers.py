@@ -14,7 +14,7 @@ class AnalysisTagSerializer(serializers.HyperlinkedModelSerializer):
 class QuantitativeAnalysisEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = QuantitativeAnalysisEntry
-        fields = ('name', 'value', 'unit')
+        fields = ('name', 'value', 'unit', 'diagnosis')
 
 
 class AnalysisEntrySerializer(serializers.HyperlinkedModelSerializer):
@@ -23,7 +23,6 @@ class AnalysisEntrySerializer(serializers.HyperlinkedModelSerializer):
     display_image = serializers.SerializerMethodField()
 
     def get_display_image(self, obj: AnalysisEntry):
-        print(Path(obj.file.path).suffix.lower(), Path(obj.file.path).suffix.lower() in ('.png', '.jpg', '.jpeg'))
         return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', '.jpeg')
 
     class Meta:
@@ -44,8 +43,13 @@ class AnalysisEntryDetailSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     quantitative_analysis_entries = QuantitativeAnalysisEntrySerializer(many=True, read_only=True)
 
+    display_image = serializers.SerializerMethodField()
+
+    def get_display_image(self, obj: AnalysisEntry):
+        return Path(obj.file.path).suffix.lower() in ('.png', '.jpg', '.jpeg')
+
     class Meta:
         model = AnalysisEntry
         fields = ('url', 'name', 'type', 'tags', 'file', 'analysis_date',
-                  'diagnosis', 'quantitative_analysis_entries', 'owner')
+                  'diagnosis', 'quantitative_analysis_entries', 'owner', 'display_image')
         extra_kwargs = {'diagnosis': {'read_only': True}}
